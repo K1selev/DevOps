@@ -1,0 +1,58 @@
+stages:
+        - build
+        - style
+        - test
+        - deploy
+
+building:
+        stage: build
+        tags:
+                - build
+        script:
+                - cd src/cat/
+                - make s21_cat
+                - cd ../grep/
+                - make s21_grep
+        artifacts:
+                paths:
+                        - src/cat/s21_cat
+                        - src/grep/s21_grep
+                expire_in: 30 days
+        after_script:
+                - sh src/bot.sh "build"
+styletest:
+        stage: style
+        tags:
+                - style
+        script:
+                - set +e 
+                - cd src/cat/
+                - clang-format -n --style=Google *.c *h 2> style_output.txt
+                - sh ../style_check.sh
+                - set -e
+                - cd ../grep/
+                - clang-format -n --style=Google *.c *h 2> style_output.txt
+                - sh ../style_check.sh
+        after_script:
+                - sh src/bot.sh "styletest"
+testing:
+        stage: test
+        tags:
+                - test
+        script:
+                - cd src/
+                - bash unit_test.sh
+        when: on_success
+        after_script:
+                - sh src/bot.sh "unit-test"
+deploying:
+        stage: deploy
+        tags:
+                - deploy
+        script:
+                - cd src/
+                - sudo chmod +x deploy.sh
+                - bash deploy.sh
+        when: manual
+        after_script:
+                - sh src/bot.sh "deploy"
