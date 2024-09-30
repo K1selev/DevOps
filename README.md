@@ -1,2 +1,16 @@
-# DevOps
-DevOps projects
+# DevOps projects
+
+# Linux
+Установка и обновления системы Linux. Основы администрирования.
+
+# Linux Network
+Конфигурация сетей Linux на виртуальных машинах.
+
+# Linux Monitoring
+Базовые скрипты bash для Linux и системное исследование.
+
+# Simple Docker
+Введение в docker. Разработка простого образа docker для собственного сервера.
+
+# CICD
+Разработка простого CI/CD для проекта SimpleBash. Сборка, тестирование, развертывание.
